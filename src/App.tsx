@@ -1,9 +1,9 @@
-import Sidebar from "./components/sidebar";
-import MainContent from "./components/main-content";
+import Sidebar from "@/components/sidebar";
+import MainContent from "@/components/main-content";
 import { useState, useEffect } from "react";
 
-import MiniSidebar from "./components/mini-sidebar";
-import { useResizableSidebar } from "./hooks/useResizableSidebar";
+import MiniSidebar from "@/components/mini-sidebar";
+import { useResizableSidebar } from "@/hooks/useResizableSidebar";
 import { useCallback } from "react";
 
 const FileExplorer = () => {

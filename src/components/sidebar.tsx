@@ -8,7 +8,7 @@ interface SidebarProps {
 }
 const Sidebar = memo(
   ({ width, handleResize, isResizing, tooltipWidth }: SidebarProps) => {
-    console.log("Sidebar render");
+    // console.log("Sidebar render");
     return (
       <div
         className="bg-[#191515] text-white  relative border-r border-[#252121] "

@@ -1,14 +1,25 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useState } from "react";
-import { RxDashboard } from "react-icons/rx";
+import { footerItems, headerItems } from "../../data/mini-sidebar-items";
+import SidebarItem from "./sidebar-item";
 
 interface MiniSidebarProps {
   isSidebarOpen: boolean;
   onSidebarToggle: () => void;
 }
 const MiniSidebar = ({ isSidebarOpen, onSidebarToggle }: MiniSidebarProps) => {
-  const [showTooltip, setShowTooltip] = useState(false);
-  console.log("MiniSidebar render");
+  const [visibleTooltips, setVisibleTooltips] = useState<
+    Record<string, boolean>
+  >({});
+  // console.log("MiniSidebar render");
+
+  const handleMouseEnter = useCallback((id: string) => {
+    setVisibleTooltips((prev) => ({ ...prev, [id]: true }));
+  }, []);
+
+  const handleMouseLeave = useCallback((id: string) => {
+    setVisibleTooltips((prev) => ({ ...prev, [id]: false }));
+  }, []);
 
   return (
     <div className="bg-[#191515] text-white  relative border-r border-[#252121] w-14  flex items-center flex-col ">
@@ -16,20 +27,33 @@ const MiniSidebar = ({ isSidebarOpen, onSidebarToggle }: MiniSidebarProps) => {
         <img src="/brand.svg" alt="brand-logo" className="w-6" />
       </div>
 
-      <div className="mt-6 relative">
-        <div
-          className="bg-[#272323] p-2 rounded-md cursor-pointer"
-          onClick={onSidebarToggle}
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
-        >
-          <RxDashboard size={20} />
+      <div className="mt-6 relative  h-full flex flex-col justify-between items-center ">
+        <div>
+          {headerItems.map((item) => (
+            <SidebarItem
+              key={item.id}
+              item={item}
+              isSidebarOpen={isSidebarOpen}
+              onSidebarToggle={onSidebarToggle}
+              visible={visibleTooltips[item.id]}
+              onMouseEnter={() => handleMouseEnter(item.id)}
+              onMouseLeave={() => handleMouseLeave(item.id)}
+            />
+          ))}
         </div>
-        {showTooltip && (
-          <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 whitespace-nowrap bg-[#272323] text-white text-xs rounded py-1 px-2 z-10">
-            {isSidebarOpen ? "Collapse" : "Expand"} Sidebar
-          </div>
-        )}
+        <div>
+          {footerItems.map((item) => (
+            <SidebarItem
+              key={item.id}
+              item={item}
+              isSidebarOpen={isSidebarOpen}
+              onSidebarToggle={onSidebarToggle}
+              visible={visibleTooltips[item.id]}
+              onMouseEnter={() => handleMouseEnter(item.id)}
+              onMouseLeave={() => handleMouseLeave(item.id)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
